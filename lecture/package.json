@@ -11,7 +11,7 @@
     "axios": "^0.18.0"
   },
   "scripts": {
-    "prebuild": "n ../dist || true",
+    "prebuild": "n stable || true",
     "build-watch": "npm run prebuild && npm run copy-dependencies && tsc -w --preserveWatchOutput true",
     "build": "npm run prebuild && npm run copy-dependencies && tsc",
     "copy-dependencies": "cpx \"./node_modules/**/*\" ../dist/node_modules",
