@@ -5,21 +5,28 @@ import {
     table
 } from '@aws/dynamodb-data-mapper-annotations';
 
-//@table('appsync-lambda-ddb-LectureTable-SLR2SSXZPOFG')
-@table('class-dev-LectureTable-MXV4LYH979IN')
+// SAMPLE_TABLE로 바꿔주어야함
+
+const tableName: string = String(process.env.SAMPLE_TABLE);
+
+if (!process.env.SAMPLE_TABLE) {
+    this.tableName = 'class-dev-LectureTable-MXV4LYH979IN';;
+}
+
+@table(tableName)
 class LectureDDB {
-    
+
     @hashKey()
-    private partitionkey:string
+    private partitionkey: string
 
     @rangeKey()
-    private sortkey:string
+    private sortkey: string
 
     @attribute()
-    private attribute1:string
+    private attribute1: string
 
     @attribute()
-    private attribute2:string
+    private attribute2: string
 
     /**
      * 
@@ -40,7 +47,7 @@ class LectureDDB {
      * @param sortkey 
      * @param attribute1 
      */
-    public static createObject(partitionkey:string, sortkey:string, attribute1:string, attribute2:string):LectureDDB {
+    public static createObject(partitionkey: string, sortkey: string, attribute1: string, attribute2: string): LectureDDB {
         return Object.assign(new LectureDDB,
             {
                 partitionkey: partitionkey,
@@ -50,7 +57,7 @@ class LectureDDB {
             }
         );
     }
-    
+
 }
 
 export default LectureDDB;
