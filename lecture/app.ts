@@ -38,12 +38,17 @@ import LectureController from './controller/LectureController';
 
 let lectureController = new LectureController();
 let response;
+let appsyncFieldName;
 
 exports.lambdaHandler = async (event, context) => {
     console.info('received:', event);
     console.info('context:', context);
 
-    let appsyncFieldName = event.info.fieldName;
+    if (event.info.fieldName) {
+        appsyncFieldName = event.info.fieldName;
+    } else {
+        appsyncFieldName = '';
+    }
 
     if (event.httpMethod === 'POST' && event.path === '/lectures') {
 
