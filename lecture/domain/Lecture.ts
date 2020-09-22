@@ -10,7 +10,7 @@ class Lecture {
     }
 
     get getLecture(): string {
-        return this.id + ":" + this.name;
+        return this.id + ":" + this.classname + ", tutor :" + this.name;
     }
 }
 

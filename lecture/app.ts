@@ -43,6 +43,10 @@ export async function lambdaHandler(event, context) {
             response = lectureController.createLecture(event);
         } else if (event.httpMethod === 'GET' && event.path === '/classes') {
             response = lectureController.listLecture(event);
+        } else if (event.httpMethod === 'GET' && event.path === '/classes/id') {
+            response = lectureController.getLectureDetail(event);
+        } else if (event.httpMethod === 'POST' && event.path === '/classes/id') {
+            response = lectureController.addLectureToCart(event);
         }
     } catch (err) {
         console.log(err);

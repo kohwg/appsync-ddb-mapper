@@ -13,6 +13,9 @@ var LectureMockRepository = /** @class */ (function () {
     LectureMockRepository.prototype.save = function (lecture) {
         return lecture;
     };
+    LectureMockRepository.prototype.getDetail = function (id) {
+        return new Lecture_1.default("004", "Yoga", "Wongyung Koh");
+    };
     return LectureMockRepository;
 }());
 exports.default = LectureMockRepository;

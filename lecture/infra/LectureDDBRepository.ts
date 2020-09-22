@@ -10,5 +10,8 @@ class LectureDDBRespotiry implements LectureRepository{
     save(lecture: Lecture): Lecture {
         throw new Error("Method not implemented.");
     }
-    
+
+    getDetail(id: String): Lecture {
+        throw new Error("Method not implemented.");
+    }
 }

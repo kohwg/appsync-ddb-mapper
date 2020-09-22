@@ -28,6 +28,29 @@ var LectureController = /** @class */ (function () {
             })
         };
     };
+    LectureController.prototype.getLectureDetail = function (event) {
+        //        수신한 event에서 lecture id값을 받아, detail정보를 출력하도록 하려면 아래처럼..
+        //        let Id:string = event.body['id'];
+        //        let result:string=this.lectureService.getLectureDetail(id);
+        var path = event.path;
+        var result = this.lectureService.getLectureDetail(path);
+        return {
+            'statusCode': 200,
+            'body': JSON.stringify({
+                message: result
+            })
+        };
+    };
+    LectureController.prototype.addLectureToCart = function (event) {
+        var path = event.path;
+        var result = this.lectureService.addLectureToCart(path);
+        return {
+            'statusCode': 200,
+            'body': JSON.stringify({
+                message: result
+            })
+        };
+    };
     return LectureController;
 }());
 exports.default = LectureController;

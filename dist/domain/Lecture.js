@@ -8,7 +8,7 @@ var Lecture = /** @class */ (function () {
     }
     Object.defineProperty(Lecture.prototype, "getLecture", {
         get: function () {
-            return this.id + ":" + this.name;
+            return this.id + ":" + this.classname + ", tutor :" + this.name;
         },
         enumerable: false,
         configurable: true

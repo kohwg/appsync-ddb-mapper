@@ -9,5 +9,8 @@ var LectureDDBRespotiry = /** @class */ (function () {
     LectureDDBRespotiry.prototype.save = function (lecture) {
         throw new Error("Method not implemented.");
     };
+    LectureDDBRespotiry.prototype.getDetail = function (id) {
+        throw new Error("Method not implemented.");
+    };
     return LectureDDBRespotiry;
 }());
