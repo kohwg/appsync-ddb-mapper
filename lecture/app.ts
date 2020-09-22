@@ -47,7 +47,7 @@ exports.lambdaHandler = async (event, context) => {
 
         response = lectureController.keywordSearch(event); 
 
-    } else if ( event.body.info.fieldName == 'createLecture' ) {
+    } else if ( event.info.fieldName == 'createLecture' ) {
 
         let result = await lectureController.createLecture(event);
         response = result.data;
