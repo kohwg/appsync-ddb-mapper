@@ -7,7 +7,7 @@ class SearchMockEngine implements SearchEngine{
         if( keyword === "tennis" ){
             return [new Lecture("001","Tennis","Wongyung Koh"), new Lecture("002", "Swimming", "Dawoon"), new Lecture("003", "Cooking", "Joowon_Jiae")];
         } else {
-            throw new Error("Can not search");
+            return [new Lecture("001","NoKeyword","NoKeyword"), new Lecture("002", "Swimming", "Dawoon")];
         }
     }
 

@@ -9,6 +9,10 @@ class Lecture {
         this.title = title;
         this.tutorName = tutorName;
     }
+
+    get getLecture(): string {
+        return this.lectureId + ":" + this.title + ", tutor :" + this.tutorName;
+    }
 }
 
 export default Lecture;

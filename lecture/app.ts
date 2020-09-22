@@ -1,5 +1,5 @@
 import LectureController from './controller/LectureController';
-let response;
+
 
 /**
  *
@@ -35,19 +35,27 @@ let response;
  * @returns {Object} object.body - JSON Payload to be returned
  * 
  */
-export async function lambdaHandler(event, context) {
-    let lectureController = new LectureController();
 
-    try{
-        if (event.httpMethod === 'POST' && event.path === '/lectures') {
-            response = lectureController.keywordSearch(event);
-        } else if (event.httpMethod === 'GET' && event.path === '/lectures') {
-            response = lectureController.keywordSearch(event);
-        } 
-    } catch (err) {
-        console.log(err);
-        return err;
+let lectureController = new LectureController();
+let response;
+
+exports.lambdaHandler = async (event, context) => {
+    console.info('received:', event);
+    console.info('context:', context);  
+
+    if (event.httpMethod === 'POST' && event.path === '/lectures'){
+
+        response = lectureController.keywordSearch(event); 
+
+    } else if ( event.body.info.fieldName == 'createLecture' ) {
+
+        let result = await lectureController.createLecture(event);
+        response = result.body;
+    }
+     else {
+        console.log("does not exist the mapping fieldName");
+        response = 'does not exist the mapping fieldName';
     }
 
-    return response
-};
+    return response;
+}

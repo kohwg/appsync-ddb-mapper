@@ -23,35 +23,227 @@ Globals:
     Timeout: 3
 
 Resources:
-  LectureFunction:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+# AppSync 
+  LectureGraphQLApi:
+    Type: 'AWS::AppSync::GraphQLApi'
     Properties:
-      CodeUri: dist/
+      Name: !Sub "Emart-CultureClub-Lecture-${Stage}"
+      AuthenticationType: "AWS_IAM"
+
+  LectureGraphQLSchema:
+    Type: AWS::AppSync::GraphQLSchema
+    Properties: 
+      ApiId: !GetAtt LectureGraphQLApi.ApiId
+      Definition: >
+        input InputLecture {
+          partitionkey: String
+          sortkey: String
+          attribute1: String
+          attribute2: String
+        }
+
+        type Lecture {
+          partitionkey: String
+          sortkey: String
+          attribute1: String
+          attribute2: String
+        }
+
+        schema {
+          query: Query
+          mutation: Mutation
+        }
+
+        type Mutation {
+          createLecture(input: InputLecture): Lecture
+        }
+
+        type Query {
+          getLectureById(lectureId: String): Lecture
+          getLecturesByKeyword(keyword: String): [Lecture]
+        }
+
+
+  CreateBeforeLectureResolver:
+    Type: AWS::AppSync::Resolver
+    Properties:
+      ApiId: !GetAtt LectureGraphQLApi.ApiId
+      TypeName: 'Query'
+      FieldName: 'getLecture'
+      DataSourceName: !GetAtt LectureFunctionDatasource.Name
+
+  LectureFunctionDatasource:
+    Type: AWS::AppSync::DataSource
+    Properties: 
+      Name: "LectureFunctionDatasource"
+      ApiId: !GetAtt LectureGraphQLApi.ApiId
+      Description: "Lecture Datasource with Lambda function"
+      Type: AWS_LAMBDA
+      ServiceRoleArn: !GetAtt EmartCultureClubLectureLambdaIAMRole.Arn
+      LambdaConfig: 
+        LambdaFunctionArn: !GetAtt LectureFunction.Arn
+          
+  EmartCultureClubLectureLambdaIAMRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Action:
+              - "sts:AssumeRole"
+            Effect: "Allow"
+            Principal:
+              Service:
+                - "appsync.amazonaws.com"
+      Policies:
+        - PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Action:
+                  - "*"
+                Effect: "Allow"
+                Resource:
+                  - !GetAtt LectureFunction.Arn
+          PolicyName: "EmartCultureClubLectureLambdaRole"
+      
+
+  # Lambda
+  LectureFunction:
+    Type: AWS::Serverless::Function
+    Properties:
       Handler: app.lambdaHandler
+      CodeUri: dist/
       Runtime: nodejs12.x
       Events:
-        SearchKeyword:
-          Type: Api 
+        HelloWorld:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
             Path: /lectures
-            Method: get
-        CreateAccounts:
-          Type: Api 
-          Properties:
-            Path: /lectures
-            Method: post
+            Method: POST
 
+      MemorySize: 128
+      Timeout: 100
+      Description: A simple example includes a HTTP get method to get one item by id from a DynamoDB table.
+      
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref LectureTable
+      Environment:
+        Variables:
+          SAMPLE_TABLE: !Ref LectureTable
+          SECRET_ARN: !Ref MasterSecretArn
+          SECRET_MASTER: !Ref MasterSecretsManagerKey
+          STAGE: !Ref Stage
+
+  # Dynamodb
+  LectureTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        -
+          AttributeName: "partitionkey"
+          AttributeType: "S"
+        -
+          AttributeName: "sortkey"
+          AttributeType: "S"
+        -
+          AttributeName: "attribute1"
+          AttributeType: "S"
+        -
+          AttributeName: "attribute2"
+          AttributeType: "S"
+
+
+      KeySchema:
+        -
+          AttributeName: "partitionkey"
+          KeyType: "HASH"
+        -
+          AttributeName: "sortkey"
+          KeyType: "RANGE"
+      GlobalSecondaryIndexes:
+        -
+          IndexName: "GSI-1"
+          KeySchema:
+            -
+              AttributeName: "attribute1"
+              KeyType: "HASH"
+          Projection:
+            ProjectionType: "KEYS_ONLY"
+          ProvisionedThroughput:
+            ReadCapacityUnits: 5
+            WriteCapacityUnits: 5
+        -
+          IndexName: "GSI-2"
+          KeySchema:
+            -
+              AttributeName: "attribute2"
+              KeyType: "HASH"
+          Projection:
+            ProjectionType: "KEYS_ONLY"
+          ProvisionedThroughput:
+            ReadCapacityUnits: 5
+            WriteCapacityUnits: 5
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+  WriteCapacityScalableTarget:
+    Type: AWS::ApplicationAutoScaling::ScalableTarget
+    Properties:
+      MaxCapacity: 15
+      MinCapacity: 5
+      ResourceId: !Join
+        - /
+        - - table
+          - !Ref LectureTable
+      RoleARN: !GetAtt ScalingRole.Arn
+      ScalableDimension: dynamodb:table:WriteCapacityUnits
+      ServiceNamespace: dynamodb
+  ScalingRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              Service:
+                - application-autoscaling.amazonaws.com
+            Action:
+              - "sts:AssumeRole"
+      Path: "/"
+      Policies:
+        -
+          PolicyName: "root"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              -
+                Effect: "Allow"
+                Action:
+                  - "dynamodb:DescribeTable"
+                  - "dynamodb:UpdateTable"
+                  - "cloudwatch:PutMetricAlarm"
+                  - "cloudwatch:DescribeAlarms"
+                  - "cloudwatch:GetMetricStatistics"
+                  - "cloudwatch:SetAlarmState"
+                  - "cloudwatch:DeleteAlarms"
+                Resource: "*"
+  WriteScalingPolicy:
+    Type: AWS::ApplicationAutoScaling::ScalingPolicy
+    Properties:
+      PolicyName: WriteAutoScalingPolicy
+      PolicyType: TargetTrackingScaling
+      ScalingTargetId: !Ref WriteCapacityScalableTarget
+      TargetTrackingScalingPolicyConfiguration:
+        TargetValue: 50.0
+        ScaleInCooldown: 60
+        ScaleOutCooldown: 60
+        PredefinedMetricSpecification:
+          PredefinedMetricType: DynamoDBWriteCapacityUtilization
 
 Outputs:
-  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
-  # Find out more about other implicit resources you can reference within SAM
-  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  HelloWorldApi:
-    Description: "API Gateway endpoint URL for Prod stage for Account function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/lectures/"
-  LectureFunction:
-    Description: "Account Lambda Function ARN"
-    Value: !GetAtt LectureFunction.Arn
-  LectureFunctionIamRole:
-    Description: "Implicit IAM Role created for Account function"
-    Value: !GetAtt LectureFunctionRole.Arn
+  WebEndpoint:
+    Description: "AppSyncGraphQL endpoint URL for Prod stage"
+    Value: !GetAtt LectureGraphQLApi.GraphQLUrl
