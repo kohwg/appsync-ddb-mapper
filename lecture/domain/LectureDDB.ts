@@ -5,7 +5,8 @@ import {
     table
 } from '@aws/dynamodb-data-mapper-annotations';
 
-@table('appsync-lambda-ddb-LectureTable-SLR2SSXZPOFG')
+//@table('appsync-lambda-ddb-LectureTable-SLR2SSXZPOFG')
+@table('class-dev-LectureTable-MXV4LYH979IN')
 class LectureDDB {
     
     @hashKey()
