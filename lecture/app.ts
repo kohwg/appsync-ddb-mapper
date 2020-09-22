@@ -41,20 +41,20 @@ let response;
 
 exports.lambdaHandler = async (event, context) => {
     console.info('received:', event);
-    console.info('context:', context);  
+    console.info('context:', context);
 
     let appsyncFieldName = event.info.fieldName;
 
-    if (event.httpMethod === 'POST' && event.path === '/lectures'){
+    if (event.httpMethod === 'POST' && event.path === '/lectures') {
 
-        response = lectureController.keywordSearch(event); 
+        response = lectureController.keywordSearch(event);
 
-    } else if ( appsyncFieldName == 'createLecture' ) {
+    } else if (appsyncFieldName == 'createLecture') {
 
         let result = await lectureController.createLecture(event);
         response = result.data;
     }
-     else {
+    else {
         console.log("does not exist the mapping fieldName");
         response = 'does not exist the mapping fieldName';
     }
