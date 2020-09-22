@@ -64,12 +64,12 @@ Resources:
         }
 
 
-  CreateBeforeLectureResolver:
+  CreateLectureResolver:
     Type: AWS::AppSync::Resolver
     Properties:
       ApiId: !GetAtt LectureGraphQLApi.ApiId
-      TypeName: 'Query'
-      FieldName: 'getLecture'
+      TypeName: 'Mutation'
+      FieldName: 'createLecture'
       DataSourceName: !GetAtt LectureFunctionDatasource.Name
 
   LectureFunctionDatasource:
