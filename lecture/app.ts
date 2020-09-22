@@ -43,11 +43,13 @@ exports.lambdaHandler = async (event, context) => {
     console.info('received:', event);
     console.info('context:', context);  
 
+    let appsyncFieldName = event.info.fieldName;
+
     if (event.httpMethod === 'POST' && event.path === '/lectures'){
 
         response = lectureController.keywordSearch(event); 
 
-    } else if ( event.info.fieldName == 'createLecture' ) {
+    } else if ( appsyncFieldName == 'createLecture' ) {
 
         let result = await lectureController.createLecture(event);
         response = result.data;

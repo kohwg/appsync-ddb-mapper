@@ -5,8 +5,8 @@ import {
     table
 } from '@aws/dynamodb-data-mapper-annotations';
 
-// SAMPLE_TABLE로 바꿔주어야함
 
+// cloudformation template에서 생성되는 TABLE값을 ENV로 받아와 사용 
 const tableName: string = String(process.env.SAMPLE_TABLE);
 
 if (!process.env.SAMPLE_TABLE) {
