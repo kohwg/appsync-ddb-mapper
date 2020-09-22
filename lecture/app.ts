@@ -50,7 +50,7 @@ exports.lambdaHandler = async (event, context) => {
     } else if ( event.body.info.fieldName == 'createLecture' ) {
 
         let result = await lectureController.createLecture(event);
-        response = result.body;
+        response = result.data;
     }
      else {
         console.log("does not exist the mapping fieldName");
