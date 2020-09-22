@@ -48,21 +48,3 @@ class LectureController {
 
 
 export default LectureController;
-
-process.env.SAMPLE_TABLE = 'class-dev-LectureTable-MXV4LYH979IN';
-
-let lectureController:LectureController = new LectureController();
-let event:AppSyncEvent = {
-    arguments: {
-        input : {
-            partitionkey: "2",
-            sortkey: "3",
-            attribute1: "4",
-            attribute2: "5"
-        }
-    },
-    identity: {},
-    info: {},
-};
-
-lectureController.createLecture(event);
