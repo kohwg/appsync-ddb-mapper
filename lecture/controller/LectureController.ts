@@ -1,8 +1,6 @@
 import LectureService from '../application/LectureService';
 import { AwsEvent } from './interfaces/AwsEvent.interface';
-import Lecture from '../domain/Lecture';
 import Response from '../controller/interfaces/Response'
-import { LectureInfo } from '../application/interfaces/LectureInfo';
 import LectureEntity from '../domain/LectureEntity';
 import { AppSyncEvent } from './interfaces/AppSyncEvent';
 import ResponseAppsync from './interfaces/ResponseAppsync';
@@ -17,18 +15,8 @@ class LectureController {
 
     public keywordSearch(event: AwsEvent): Response {
 
- //       let keyword: string = '';
-        console.log("###Controller### event is : ", event)
-  /*      if (event.body) {
-            let body = JSON.parse(event.body).keyword
-            if (body.keyword)
-                keyword = body.keyword;
-        }*/
-        let keyword = JSON.parse(JSON.stringify(event.body)).keyword;
-        //       let keyword: string = event.body['keyword'];
-
-        console.log("###Controller### keyword is : ", keyword)
-        //        let path = event.path;
+        console.log("###Controller### event is : ", event); 
+        let keyword: string = event.body['keyword'];
         let result = this.lectureService.keywordSearch(keyword);
         return {
             'statusCode': 200,

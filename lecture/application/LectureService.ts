@@ -3,7 +3,6 @@ import SearchMockEngine from '../infra/SearchMockEngine';
 import SearchEngine from '../domain/SearchEngine';
 import LectureRepository from '../domain/LectureRepository';
 import LectureDDBRepository from '../infra/LectureDDBRepository';
-import { LectureInfo } from './interfaces/LectureInfo';
 import LectureEntity from '../domain/LectureEntity';
 
 class LectureService {
@@ -16,6 +15,7 @@ class LectureService {
         this.lectureRepository = new LectureDDBRepository();
     }
 
+    // 키워드를 통해 강좌를 검색한다 
     keywordSearch(keyword: string): String {
         let lectureList: Array<Lecture> = this.searchEngine.searchKeyword(keyword);
         let lectureListStr: String = "";
@@ -28,15 +28,10 @@ class LectureService {
 
     }
 
+    // 새로운 강좌를 생성한다 
     public async createLecture(request: LectureEntity) {
         console.log("### requested lecture info: ", request);
-        // createObject 를 할때, 어떤 정보들만을 보내줄것인지. object만 보내주고 domain에서 처리할수도..
-        let lecture: LectureEntity = LectureEntity.createObject(request
-  /*          request.partitionkey,
-            request.sortkey,
-            request.attribute1,
-            request.attribute2*/
-        );
+        let lecture: LectureEntity = LectureEntity.createObject(request);
         return await this.lectureRepository.save(lecture);
     }
 }

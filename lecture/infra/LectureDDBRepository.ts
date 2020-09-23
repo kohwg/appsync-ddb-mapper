@@ -2,7 +2,6 @@ import LectureEntity from "../domain/LectureEntity";
 import LectureRepository from "../domain/LectureRepository";
 import * as AWS from 'aws-sdk';
 import { DataMapper, QueryOptions } from '@aws/dynamodb-data-mapper';
-// import 관리..
 import {
     AttributePath, FunctionExpression,
     UpdateExpression,

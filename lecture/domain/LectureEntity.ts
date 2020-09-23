@@ -46,13 +46,14 @@ class LectureEntity {
      * @param partitionkey 
      * @param sortkey 
      * @param attribute1 
+     * @param attribute2
      */
-    // request object를 받아 여기서 ..
-    //public static createObject(partitionkey: string, sortkey: string, attribute1: string, attribute2: string): LectureEntity {
     public static createObject(request: LectureEntity): LectureEntity {
         console.log("### object is : ", request);
     
-        // validate 과정을 여기 넣어도 되고, 많이 커지면 따로 빼도록 하자.
+        //TODO Validation Implementation
+        //Example) 강좌제목에 비속어가 들어있다던지? 특정항목이 null이라던지?
+        //만약 validation 과정이 길어지면 Domain layer에 Validator로 별도로 분리하는것을 고려할 것 
         return Object.assign(new LectureEntity,
             {
                 partitionkey: request.partitionkey,

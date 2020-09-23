@@ -1,5 +1,4 @@
 import LectureEntity from './LectureEntity';
-import { promises } from 'dns';
 
 interface LectureRepository {
    
