@@ -1,10 +1,10 @@
-import LectureDDB from './LectureDDB';
+import LectureEntity from './LectureEntity';
 import { promises } from 'dns';
 
 interface LectureRepository {
    
-    save(lecture:LectureDDB): Promise<LectureDDB>;
-    get(partitionkey:string, sortkey:string): Promise<LectureDDB>;
+    save(lecture:LectureEntity): Promise<LectureEntity>;
+    get(partitionkey:string, sortkey:string): Promise<LectureEntity>;
     
 }
 

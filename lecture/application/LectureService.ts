@@ -3,8 +3,8 @@ import SearchMockEngine from '../infra/SearchMockEngine';
 import SearchEngine from '../domain/SearchEngine';
 import LectureRepository from '../domain/LectureRepository';
 import LectureDDBRepository from '../infra/LectureDDBRepository';
-import { InputLecture } from './interfaces/InputLecture';
-import LectureDDB from '../domain/LectureDDB';
+import { LectureInfo } from './interfaces/LectureInfo';
+import LectureEntity from '../domain/LectureEntity';
 
 class LectureService {
 
@@ -28,13 +28,14 @@ class LectureService {
 
     }
 
-    public async createLecture(request: InputLecture) {
+    public async createLecture(request: LectureEntity) {
         console.log("### requested lecture info: ", request);
-        let lecture: LectureDDB = LectureDDB.createObject(
-            request.partitionkey,
+        // createObject 를 할때, 어떤 정보들만을 보내줄것인지. object만 보내주고 domain에서 처리할수도..
+        let lecture: LectureEntity = LectureEntity.createObject(request
+  /*          request.partitionkey,
             request.sortkey,
             request.attribute1,
-            request.attribute2
+            request.attribute2*/
         );
         return await this.lectureRepository.save(lecture);
     }

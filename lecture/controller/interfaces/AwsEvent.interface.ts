@@ -7,5 +7,5 @@ export interface AwsEvent {
     pathParameters: object;
     stageVariables: object;
     requestContext: object;
-    body: object;
+    body: string;
 }

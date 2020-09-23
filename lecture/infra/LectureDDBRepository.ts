@@ -1,7 +1,8 @@
-import LectureDDB from "../domain/LectureDDB";
+import LectureEntity from "../domain/LectureEntity";
 import LectureRepository from "../domain/LectureRepository";
 import * as AWS from 'aws-sdk';
 import { DataMapper, QueryOptions } from '@aws/dynamodb-data-mapper';
+// import 관리..
 import {
     AttributePath, FunctionExpression,
     UpdateExpression,
@@ -22,14 +23,14 @@ class LectureDDBRepository implements LectureRepository {
     constructor() {
     }
 
-    public async save(lecture: LectureDDB) {
-        console.log("save : ", lecture);
+    public async save(lecture: LectureEntity) {
+        console.log("### save : ", lecture);
         return await this.mapper.put(lecture);
     }
 
     public async get(partitionkey: string, sortkey: string) { // primary key
 
-        const toGet = Object.assign(new LectureDDB,
+        const toGet = Object.assign(new LectureEntity,
             {
                 partitionkey: partitionkey,
                 sortkey: sortkey
@@ -46,7 +47,7 @@ class LectureDDBRepository implements LectureRepository {
      */
     public async query(partitionkey: string, sortkey: string) {
         const iterator = this.mapper.query(
-            LectureDDB,
+            LectureEntity,
             {   // key condition - (partitionkey, range key you can use expression ( beginwith, between.. and so on))
                 partitionkey: partitionkey,
                 sortkey: beginsWith(sortkey)
@@ -59,13 +60,3 @@ class LectureDDBRepository implements LectureRepository {
 
 }
 export default LectureDDBRepository;
-
-// let test:LectureDDBRepository = new LectureDDBRepository();
-
-// console.log("save")
-// // let item = await test.save(LectureDDB.getObject("isheejong", "2020-09-21#1", "강좌1"));
-
-
-// console.log("end save");
-
-// test.query("isheejong", "2020-09-21");

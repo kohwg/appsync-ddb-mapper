@@ -1,4 +1,4 @@
-export interface InputLecture {
+export interface LectureInfo {
     partitionkey:string
     sortkey:string
     attribute1:string

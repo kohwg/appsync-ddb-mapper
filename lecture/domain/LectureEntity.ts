@@ -14,7 +14,7 @@ if (!process.env.SAMPLE_TABLE) {
 }
 
 @table(tableName)
-class LectureDDB {
+class LectureEntity {
 
     @hashKey()
     private partitionkey: string
@@ -47,17 +47,22 @@ class LectureDDB {
      * @param sortkey 
      * @param attribute1 
      */
-    public static createObject(partitionkey: string, sortkey: string, attribute1: string, attribute2: string): LectureDDB {
-        return Object.assign(new LectureDDB,
+    // request object를 받아 여기서 ..
+    //public static createObject(partitionkey: string, sortkey: string, attribute1: string, attribute2: string): LectureEntity {
+    public static createObject(request: LectureEntity): LectureEntity {
+        console.log("### object is : ", request);
+    
+        // validate 과정을 여기 넣어도 되고, 많이 커지면 따로 빼도록 하자.
+        return Object.assign(new LectureEntity,
             {
-                partitionkey: partitionkey,
-                sortkey: sortkey,
-                attribute1: attribute1,
-                attribute2: attribute2
+                partitionkey: request.partitionkey,
+                sortkey: request.sortkey,
+                attribute1: request.attribute1,
+                attribute2: request.attribute2
             }
         );
     }
 
 }
 
-export default LectureDDB;
+export default LectureEntity;
