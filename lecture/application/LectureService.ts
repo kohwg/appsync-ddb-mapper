@@ -4,6 +4,7 @@ import SearchEngine from '../domain/SearchEngine';
 import LectureRepository from '../domain/LectureRepository';
 import LectureDDBRepository from '../infra/LectureDDBRepository';
 import LectureEntity from '../domain/LectureEntity';
+import { LectureInfo } from './interfaces/LectureInfo';
 
 class LectureService {
 
@@ -31,6 +32,7 @@ class LectureService {
     // 새로운 강좌를 생성한다 
     public async createLecture(request: LectureEntity) {
         console.log("### requested lecture info: ", request);
+ //       let lecture: LectureInfo = LectureEntity.createObject(request);
         let lecture: LectureEntity = LectureEntity.createObject(request);
         return await this.lectureRepository.save(lecture);
     }
