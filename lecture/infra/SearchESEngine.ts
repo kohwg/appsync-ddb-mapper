@@ -7,6 +7,14 @@ class SearchESEngine implements SearchEngine {
         //TODO ES Implementation
         throw new Error('Method not implemented.');
     }
+    keywordSearchByLectureCenterNm(keyword: string): Lecture[] {
+        //TODO ES Implementation
+        throw new Error('Method not implemented.');
+    }
+    keywordSearchByLectureCurriculum(keyword: string): Lecture[] {
+        //TODO ES Implementation
+        throw new Error('Method not implemented.');
+    }
 
 }
 

@@ -38,18 +38,20 @@ import LectureController from './controller/LectureController';
 
 let lectureController = new LectureController();
 let response;
-let appsyncFieldName;
 
 exports.lambdaHandler = async (event, context) => {
     console.info('received:', event);
     console.info('context:', context);
 
     if (event.httpMethod === 'POST' && event.path === '/lectures') {
-
         response = lectureController.keywordSearch(event);
-
+    } else if (event.httpMethod === 'GET' && event.path === '/lectures') {
+        response = lectureController.keywordSearch(event);
+    } else if (event.httpMethod === 'GET' && event.path === '/lectureCenterNm') {
+        response = lectureController.keywordSearchByLectureCenterNm(event);
+    } else if (event.httpMethod === 'GET' && event.path === '/lectureCurriculum') {
+        response = lectureController.keywordSearchByLectureCurriculum(event);
     } else if (event.info?.fieldName == 'createLecture') {
-
         let result = await lectureController.createLecture(event);
         response = result.data;
     }

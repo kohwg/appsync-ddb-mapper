@@ -115,11 +115,26 @@ Resources:
       CodeUri: dist/
       Runtime: nodejs12.x
       Events:
-        HelloWorld:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+        SearchKeyword:
+          Type: Api 
           Properties:
             Path: /lectures
-            Method: POST
+            Method: get
+        SearchKeywordPost:
+          Type: Api 
+          Properties:
+            Path: /lectures
+            Method: post
+        SearchKeywordCenterNm:
+          Type: Api 
+          Properties:
+            Path: /lectureCenterNm
+            Method: get
+        SearchKeywordCurriculum:
+          Type: Api 
+          Properties:
+            Path: /lectureCurriculum
+            Method: get
 
       MemorySize: 128
       Timeout: 100
@@ -152,8 +167,7 @@ Resources:
         -
           AttributeName: "attribute2"
           AttributeType: "S"
-
-
+          
       KeySchema:
         -
           AttributeName: "partitionkey"

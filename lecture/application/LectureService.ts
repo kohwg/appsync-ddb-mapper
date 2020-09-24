@@ -16,7 +16,7 @@ class LectureService {
         this.lectureRepository = new LectureDDBRepository();
     }
 
-    // 키워드를 통해 강좌를 검색한다 
+    /* 키워드를 통해 강좌를 검색한다 
     keywordSearch(keyword: string): String {
         let lectureList: Array<Lecture> = this.searchEngine.searchKeyword(keyword);
         let lectureListStr: String = "";
@@ -27,7 +27,7 @@ class LectureService {
         return lectureListStr;
         //        return this.searchEngine.searchKeyword(keyword);
 
-    }
+    }*/
 
     // 새로운 강좌를 생성한다 
     public async createLecture(request: LectureEntity) {
@@ -36,6 +36,19 @@ class LectureService {
         let lecture: LectureEntity = LectureEntity.createObject(request);
         return await this.lectureRepository.save(lecture);
     }
+
+    keywordSearch(keyword: string, startCtn:number, perPage:number): Array<Lecture> {
+        return this.searchEngine.searchKeyword(keyword, startCtn, perPage);
+    }
+
+    keywordSearchByLectureCenterNm(keyword: string, startCtn:number, perPage:number): Array<Lecture> {
+        return this.searchEngine.keywordSearchByLectureCenterNm(keyword, startCtn, perPage);
+    }
+
+    keywordSearchByLectureCurriculum(keyword: string): Array<Lecture> {
+        return this.searchEngine.keywordSearchByLectureCurriculum(keyword);
+    }
+
 }
 
 export default LectureService;
