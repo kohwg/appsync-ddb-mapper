@@ -110,7 +110,6 @@ Resources:
   LectureApi:
     Type: AWS::Serverless::Api
     Properties:
-      StageName: Stage
       Cors:
         AllowHeaders: "'*'"
         AllowMethods: "'*'"
