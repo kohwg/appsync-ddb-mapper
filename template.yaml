@@ -110,7 +110,7 @@ Resources:
   LectureApi:
     Type: AWS::Serverless::Api
     Properties:
-      StageName: Prod
+      StageName: Stage
       Cors:
         AllowHeaders: "'*'"
         AllowMethods: "'*'"
@@ -271,6 +271,9 @@ Resources:
           PredefinedMetricType: DynamoDBWriteCapacityUtilization
 
 Outputs:
+  APIEndpoint:
+    Description: "APIGateway endpoint URL for Stage stage"
+    Value: !Sub "https://${LectureApi}.execute-api.${AWS::Region}.amazonaws.com/Stage"
   WebEndpoint:
     Description: "AppSyncGraphQL endpoint URL for Prod stage"
     Value: !GetAtt LectureGraphQLApi.GraphQLUrl
