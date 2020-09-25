@@ -106,7 +106,16 @@ Resources:
                   - !GetAtt LectureFunction.Arn
           PolicyName: "EmartCultureClubLectureLambdaRole"
       
-
+  # Add APiGateway resource due to cors issues     
+  LectureApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Cors:
+        AllowHeaders: "'*'"
+        AllowMethods: "'*'"
+        AllowOrigin: "'*'"
+        MaxAge: "'600'"
   # Lambda
   LectureFunction:
     Type: AWS::Serverless::Function
@@ -120,21 +129,25 @@ Resources:
           Properties:
             Path: /lectures
             Method: get
+            RestApiId: !Ref LectureApi
         SearchKeywordPost:
           Type: Api 
           Properties:
             Path: /lectures
             Method: post
+            RestApiId: !Ref LectureApi
         SearchKeywordCenterNm:
           Type: Api 
           Properties:
             Path: /lectureCenterNm
             Method: get
+            RestApiId: !Ref LectureApi
         SearchKeywordCurriculum:
           Type: Api 
           Properties:
             Path: /lectureCurriculum
             Method: get
+            RestApiId: !Ref LectureApi
 
       MemorySize: 128
       Timeout: 100

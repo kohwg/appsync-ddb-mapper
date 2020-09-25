@@ -32,6 +32,7 @@ class LectureController {
         
         return {
             'statusCode': 200,
+            'headers':{'Access-Control-Allow-Origin':'*'},
             'body': JSON.stringify({
                 message: result
             })
@@ -55,6 +56,7 @@ class LectureController {
         
         return {
             'statusCode': 200,
+            'headers': '',
             'body': JSON.stringify({
                 message: result
             })
@@ -72,6 +74,7 @@ class LectureController {
 
         return {
             'statusCode': 200,
+            'headers':'',
             'body': JSON.stringify({
                 message: result
             })
