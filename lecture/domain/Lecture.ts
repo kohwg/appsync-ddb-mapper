@@ -21,12 +21,15 @@ class Lecture {
     lectureAfSalePrice:string;    /*  클래스 할인후 금액 */
     lectureCtn:number;            /* 클래스 횟수 */
     lectureCurriculum:Array<LectureCurriculum>; /* 클래스 횟수 */
+    lectureOriginYn?: boolean;            /* club original 여부 */
+    cartYn?: string;               /* 장바구니 담기 가능 여부 Y : 가능 / N : 불가능 / D : 이미 담음*/
 
 
 
     constructor(lectureId:string, lectureNm:string, lectureStartYyyyMMdd:string, lectureEndYyyyMMdd:string, lectureStartHhMM:string, lectureEndHhMM:string, lectureDay:string,
                  lectureStatusCd:string, lectureStatusNm:string, lectureLargeCtgCd:string, lectureLargeCtgNm:string, lectureSmallCtgCd:string, lectureSmallCtgNm:string,
-                 lectureCenterCd:string, lectureCenterNm:string, lectureBfSalePrice:string, lectureAfSalePrice:string, lectureCtn:number, lectureCurriculum:Array<LectureCurriculum>) {
+                 lectureCenterCd:string, lectureCenterNm:string, lectureBfSalePrice:string, lectureAfSalePrice:string, lectureCtn:number, lectureCurriculum:Array<LectureCurriculum>,
+                 lectureOriginYn:boolean, cartYn:string ) {
     
         this.lectureId = lectureId;
         this.lectureNm = lectureNm;
@@ -47,6 +50,8 @@ class Lecture {
         this.lectureAfSalePrice = lectureAfSalePrice;
         this.lectureCtn = lectureCtn;
         this.lectureCurriculum = lectureCurriculum;
+        this.lectureOriginYn = lectureOriginYn;
+        this.cartYn = cartYn;
     }
 
     get getLecture(): string {
