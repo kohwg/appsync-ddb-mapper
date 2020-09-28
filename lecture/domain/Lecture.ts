@@ -33,7 +33,7 @@ class Lecture {
     
         this.lectureId = lectureId;
         this.lectureNm = lectureNm;
-        this.lectureStartYyyyMMdd = lectureStatusCd;
+        this.lectureStartYyyyMMdd = lectureStartYyyyMMdd;
         this.lectureEndYyyyMMdd = lectureEndYyyyMMdd;
         this.lectureStartHhMM = lectureStartHhMM;
         this.lectureEndHhMM = lectureEndHhMM;
