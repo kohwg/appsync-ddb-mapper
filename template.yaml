@@ -43,31 +43,6 @@ Resources:
           lectureId: String!
           lectureNm: String!
           lectureStatusCd: String
-          lectureStatusNm: String
-          lectureLargeCtgCd: String
-          lectureLargeCtgNm: String
-          lectureSmallCtgCd: String
-          lectureSmallCtgNm: String
-          lectureStartYyyyMMdd: String
-          lectureEndYyyyMMdd: String
-          lectureStartHhMM: String
-          lectureEndHhMM: String
-          lectureDay: String
-          lectureCenterCd: String
-          lectureCenterNm: String
-          lectureBfSalePrice: String
-          lectureAfSalePrice: String
-          lectureCtn: Int
-          lectureCurriculum: [lectureCurriculum]
-          lectureOriginYn: Boolean
-          cartYn: String
-          lectureImage: String
-          tutorId: String 
-        }
-
-        type lectureCurriculum {
-          title: String
-          content: String
         }
 
         type Lecture {
@@ -78,26 +53,6 @@ Resources:
           lectureId: String!
           lectureNm: String!
           lectureStatusCd: String
-          lectureStatusNm: String
-          lectureLargeCtgCd: String
-          lectureLargeCtgNm: String
-          lectureSmallCtgCd: String
-          lectureSmallCtgNm: String
-          lectureStartYyyyMMdd: String
-          lectureEndYyyyMMdd: String
-          lectureStartHhMM: String
-          lectureEndHhMM: String
-          lectureDay: String
-          lectureCenterCd: String
-          lectureCenterNm: String
-          lectureBfSalePrice: String
-          lectureAfSalePrice: String
-          lectureCtn: Int
-          lectureCurriculum: [lectureCurriculum]
-          lectureOriginYn: Boolean
-          cartYn: String
-          lectureImage: String
-          tutorId: String
         }
 
         schema {
