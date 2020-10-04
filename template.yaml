@@ -47,8 +47,8 @@ Resources:
         }
 
         type LectureCurriculum {
-          title: string
-          content: string
+          title: String
+          content: String
         }
 
         type Lecture {
