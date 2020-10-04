@@ -59,10 +59,10 @@ Resources:
           lectureAfSalePrice: String
           lectureCtn: Number
           lectureCurriculum: Array<LectureCurriculum>
-          lectureOriginYn?: boolean
-          cartYn?: String
-          lectureImage?: String
-          tutorId?: String
+          lectureOriginYn: boolean
+          cartYn: String
+          lectureImage: String
+          tutorId: String
           
         }
 
@@ -90,10 +90,10 @@ Resources:
           lectureAfSalePrice: String
           lectureCtn: Number
           lectureCurriculum: Array<LectureCurriculum>
-          lectureOriginYn?: boolean
-          cartYn?: String
-          lectureImage?: String
-          tutorId?: String
+          lectureOriginYn: boolean
+          cartYn: String
+          lectureImage: String
+          tutorId: String
         }
 
         schema {

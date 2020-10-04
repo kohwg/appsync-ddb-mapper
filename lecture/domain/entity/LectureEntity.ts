@@ -107,6 +107,7 @@ class LectureEntity {
         //만약 validation 과정이 길어지면 Domain layer에 Validator로 별도로 분리하는것을 고려할 것 
         return Object.assign(new LectureEntity,
             {
+                // 실제로 클래스를 생성할때, 입력받아야 하는 값들을 추려야함 
                 partitionkey: request.partitionkey,
                 sortkey: request.sortkey,
                 attribute1: request.attribute1,
