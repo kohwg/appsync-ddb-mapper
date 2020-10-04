@@ -37,7 +37,7 @@ Resources:
       Definition: >
         input InputLecture {
           partitionkey: String!
-          sortkey: String
+          sortkey: String!
           attribute1: String
           attribute2: String
           lectureId: String!
@@ -47,7 +47,7 @@ Resources:
 
         type Lecture {
           partitionkey: String!
-          sortkey: String
+          sortkey: String!
           attribute1: String
           attribute2: String
           lectureId: String!
