@@ -40,7 +40,7 @@ Resources:
           sortkey: String
           attribute1: String
           attribute2: String
-          lectureId: String
+          lectureId: String!
           lectureNm: String!
           lectureStatusCd: String
           lectureStatusNm: String
@@ -62,8 +62,7 @@ Resources:
           lectureOriginYn: Boolean
           cartYn: String
           lectureImage: String
-          tutorId: String
-          
+          tutorId: String 
         }
 
         type lectureCurriculum {
