@@ -1,40 +1,33 @@
-import Lecture from '../domain/Lecture';
+import Lecture from '../domain/entity/Lecture';
 import SearchMockEngine from '../infra/SearchMockEngine';
 import SearchEngine from '../domain/SearchEngine';
 import LectureRepository from '../domain/LectureRepository';
 import LectureDDBRepository from '../infra/LectureDDBRepository';
-import LectureEntity from '../domain/LectureEntity';
+import LectureEntity from '../domain/entity/LectureEntity';
 import { LectureInfo } from './interfaces/LectureInfo';
+import Review from "../domain/entity/Review";
+import ReviewRepository from '../domain/ReviewRepository';
+import ReviewMockRepository from '../infra/ReviewMockRepository';
 
 class LectureService {
 
     searchEngine: SearchEngine;
     lectureRepository: LectureRepository;
+    reviewRepository: ReviewRepository;
 
     constructor() {
         this.searchEngine = new SearchMockEngine();
         this.lectureRepository = new LectureDDBRepository();
+        this.reviewRepository = new ReviewMockRepository();
     }
 
-    /* 키워드를 통해 강좌를 검색한다 
-    keywordSearch(keyword: string): String {
-        let lectureList: Array<Lecture> = this.searchEngine.searchKeyword(keyword);
-        let lectureListStr: String = "";
-        lectureList.forEach(lecture => {
-            lectureListStr += lecture.getLecture + " ";
-            console.log(lectureListStr)
-        });
-        return lectureListStr;
-        //        return this.searchEngine.searchKeyword(keyword);
-
-    }*/
 
     // 새로운 강좌를 생성한다 
     public async createLecture(request: LectureEntity) {
         console.log("### requested lecture info: ", request);
  //       let lecture: LectureInfo = LectureEntity.createObject(request);
         let lecture: LectureEntity = LectureEntity.createObject(request);
-        return await this.lectureRepository.save(lecture);
+        return await this.lectureRepository.saveLecture(lecture);
     }
 
     keywordSearch(keyword: string, startCtn:number, perPage:number): Array<Lecture> {
@@ -47,6 +40,23 @@ class LectureService {
 
     keywordSearchByLectureCurriculum(keyword: string): Array<Lecture> {
         return this.searchEngine.keywordSearchByLectureCurriculum(keyword);
+    }
+
+    public async getLectureDetailByLectureId(lectureId: string) {
+        console.log("### requested lecture Id: ", lectureId);
+        return await this.lectureRepository.getLectureDetailByLectureId(lectureId);
+    }
+
+   /* getLectureDetailByLectureId(lectureId: string): LectureEntity {
+        return this.lectureRepository.getLectureDetailByLectureId(lectureId);
+    }*/
+
+    getReviewByLectureId(lectureId: string): Array<Review> {
+        return this.reviewRepository.getReviewByLectureId(lectureId);
+    }
+
+    getReviewByTutorId(tutorId: string): Array<Review> {
+        return this.reviewRepository.getReviewByTutorId(tutorId);
     }
 
 }

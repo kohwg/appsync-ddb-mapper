@@ -1,4 +1,4 @@
-import LectureCurriculum from '../domain/LectureCurriculum';
+import LectureCurriculum from './LectureCurriculum';
 
 class Paging {
 

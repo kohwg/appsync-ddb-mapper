@@ -1,9 +1,9 @@
 import LectureService from '../application/LectureService';
 import { AwsEvent } from './interfaces/AwsEvent.interface';
-import Lecture from '../domain/Lecture';
-import Paging from '../domain/Paging';
+import Lecture from '../domain/entity/Lecture';
+import Paging from '../domain/entity/Paging';
 import Response from '../controller/interfaces/Response'
-import LectureEntity from '../domain/LectureEntity';
+import LectureEntity from '../domain/entity/LectureEntity';
 import { AppSyncEvent } from './interfaces/AppSyncEvent';
 import ResponseAppsync from './interfaces/ResponseAppsync';
 
@@ -56,7 +56,7 @@ class LectureController {
         
         return {
             'statusCode': 200,
-            'headers': '',
+            'headers':{'Access-Control-Allow-Origin':'*'},
             'body': JSON.stringify({
                 message: result
             })
@@ -74,7 +74,7 @@ class LectureController {
 
         return {
             'statusCode': 200,
-            'headers':'',
+            'headers':{'Access-Control-Allow-Origin':'*'},
             'body': JSON.stringify({
                 message: result
             })
@@ -99,6 +99,53 @@ class LectureController {
         }
     }
 
+    /**
+     * LectureId로 클래스 상세 정보를 가져온다.
+     * http://127.0.0.1:3000/detailLecture?lectureId=136418
+     * @param lectureId
+     */
+    public getLectureDetailByLectureId(lectureId: string): Response {
+        let result = this.lectureService.getLectureDetailByLectureId(lectureId);
+        return {
+            'statusCode': 200,
+            'headers':{'Access-Control-Allow-Origin':'*'},
+            'body': JSON.stringify({
+                message: result
+            })
+        }
+    }
+
+    /**
+     * LectureId로 클래스의 리뷰 정보를 가져온다.
+     * http://127.0.0.1:3000/review?lectureId=136418
+     * @param lectureId
+     */
+    public getReviewByLectureId(lectureId: string): Response {
+        let result = this.lectureService.getReviewByLectureId(lectureId);
+        return {
+            'statusCode': 200,
+            'headers':{'Access-Control-Allow-Origin':'*'},
+            'body': JSON.stringify({
+                message: result
+            })
+        }
+    }
+
+    /**
+     * tutorId로 강사의 모든 리뷰 정보를 가져온다.
+     * http://127.0.0.1:3000/tutorsReview?tutorId=1
+     * @param tutorId
+     */
+    public getReviewByTutorId(tutorId: string): Response {
+        let result = this.lectureService.getReviewByTutorId(tutorId);
+        return {
+            'statusCode': 200,
+            'headers':{'Access-Control-Allow-Origin':'*'},
+            'body': JSON.stringify({
+                message: result
+            })
+        }
+    }
 }
 
 

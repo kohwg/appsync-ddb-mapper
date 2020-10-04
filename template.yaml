@@ -148,6 +148,24 @@ Resources:
             Path: /lectureCurriculum
             Method: get
             RestApiId: !Ref LectureApi
+        SearchDetailByLectureId:
+          Type: Api
+          Properties:
+            Path: /detailLecture
+            Method: get
+            RestApiId: !Ref LectureApi
+        SearchReviewByLectureId:
+          Type: Api
+          Properties:
+            Path: /review
+            Method: get
+            RestApiId: !Ref LectureApi
+        SearchReviewByTutorId:
+          Type: Api
+          Properties:
+            Path: /tutorsReview
+            Method: get
+            RestApiId: !Ref LectureApi
 
       MemorySize: 128
       Timeout: 100

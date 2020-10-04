@@ -1,8 +1,10 @@
-import Lecture from '../domain/entity/Lecture';
-import LectureCurriculum from '../domain/entity/LectureCurriculum';
-import SearchEngine from '../domain/SearchEngine';
+import Lecture from "../domain/entity/Lecture";
+import LectureCurriculum from "../domain/entity/LectureCurriculum";
+import Review from "../domain/entity/Review";
+import ReviewBuilder from "../domain/ReviewBuilder";
+import ReviewRepository from "../domain/ReviewRepository";
 
-class SearchMockEngine implements SearchEngine {
+class ReviewMockRepository implements ReviewRepository {
 
     getAllLecture(): Array<Lecture> {
         let lectureList: Array<Lecture> = [
@@ -32,81 +34,52 @@ class SearchMockEngine implements SearchEngine {
         return lectureList;
     }
 
-    searchKeyword(keyword: string, startCtn:number, perPage:number): Array<Lecture> {
+    getAllReview(): Array<Review> {
+        let reviewList: Array<Review> = [
+            new ReviewBuilder().reviewId("1").lectureId("136418").rate(5).contents("너무 유익한 강의였습니다.").regDate("20200924").writeId("1").writeNm("줌바줌바").build(),
+            new ReviewBuilder().reviewId("2").lectureId("136418").rate(4.5).contents("좋아요~~~").regDate("20200924").writeId("2").writeNm("줌바조아").build(),
+            new ReviewBuilder().reviewId("3").lectureId("138038").rate(5).contents("한국 무용 최고!!").image1("https://i.ytimg.com/vi/xy760oeu7HA/maxresdefault.jpg").regDate("20200924").writeId("3").writeNm("무용고수").build()
+        ]
 
-        let lectureList:Array<Lecture> = this.getAllLecture();
-
-        let returnList:Array<Lecture>;
-
-        if( keyword === null ){
-            returnList = lectureList;
-        }else{
-
-            returnList = new Array<Lecture>();
-            lectureList.forEach((lecture, idx) => {
-                if(lecture.lectureNm.indexOf(keyword) > -1){
-                    returnList.push(lecture)
-                }
-            });
-        }
-
-        if(returnList != null && returnList.length > 0 && startCtn != null && perPage != null){
-            return this.paging(returnList, startCtn, perPage);
-        }else{
-            return returnList;
-        }
-
+        return reviewList;
     }
 
+    getReviewByLectureId(lectureId: string): Array<Review> {
+        let reviewList: Array<Review> = this.getAllReview();
 
-    keywordSearchByLectureCenterNm(keyword: string, startCtn: number, perPage: number): Array<Lecture> {
+        let resultReviewArr: Array<Review> = reviewList?.filter(review => review.lectureId === lectureId);
 
+        return resultReviewArr;
+    }
+
+    getReviewByTutorId(tutorId: string): Array<Review> {
+        let reviewList: Array<Review> = this.getAllReview();
+        let lectureIds: string[] = this.getLectureIdByTutorId(tutorId);
+
+        let tutorAllReviewArr: Array<Review> = reviewList?.filter(review =>
+            lectureIds.filter(lectureId => lectureId === review.lectureId)
+        );
+
+        return tutorAllReviewArr;
+    }
+
+    /**
+     * tutorId로 강사가 진행했던 클래스 아이디 조회
+     * @param tutorId
+     */
+    private getLectureIdByTutorId(tutorId: string): string[] {
         let lectureList: Array<Lecture> = this.getAllLecture();
-        let returnList: Array<Lecture>;
+        let lectureIds: string[] = [];
 
-        if (keyword === null) {
-            returnList = lectureList;
-        } else {
-            returnList = new Array<Lecture>();
-            lectureList.forEach((lecture, idx) => {
-                if (lecture.lectureCenterNm.indexOf(keyword) > -1) {
-                    returnList.push(lecture)
-                }
-            });
-        }
+        lectureList.forEach((lecture) => {
+            if (lecture.tutorId === tutorId) {
+                lectureIds.push(lecture.lectureId);
+            }
+        });
 
-        if (returnList != null && returnList.length > 0 && startCtn != null && perPage != null) {
-            return this.paging(returnList, startCtn, perPage);
-        } else {
-            return returnList;
-        }
-
+        return lectureIds;
     }
 
-    keywordSearchByLectureCurriculum(keyword: string): Array<Lecture> {
-
-        let lectureList: Array<Lecture> = this.getAllLecture();
-        let returnList: Array<Lecture>;
-
-        if (keyword === null) {
-            returnList = lectureList;
-        } else {
-            returnList = new Array<Lecture>();
-            lectureList.forEach((lecture, idx) => {
-                //일단은 커리큘럼 array를 json으로 바꿔서 문자열 있는지 여부로 검색...
-                if (JSON.stringify(lecture.lectureCurriculum).indexOf(keyword) > -1) {
-                    returnList.push(lecture)
-                }
-            });
-        }
-        return returnList;
-
-    }
-
-    //페이징..
-    paging(lectureList: Array<Lecture>, startCtn: number, perPage: number): Array<Lecture> {
-        return lectureList.slice((startCtn - 1) * perPage, (startCtn * perPage < lectureList.length ? startCtn * perPage : lectureList.length));
-    }
 }
 
-export default SearchMockEngine;
+export default ReviewMockRepository;

@@ -1,10 +1,11 @@
-import LectureEntity from './LectureEntity';
+import Lecture from './entity/Lecture';
+import LectureEntity from './entity/LectureEntity';
 
 interface LectureRepository {
    
-    save(lecture:LectureEntity): Promise<LectureEntity>;
-    get(partitionkey:string, sortkey:string): Promise<LectureEntity>;
-    
+    saveLecture(lecture:LectureEntity): Promise<LectureEntity>;
+    getLectureDetailByLectureId(partitionkey:string): Promise<LectureEntity>;
+    //getLectureDetailByLectureId(partitionkey:string\): Promise<LectureEntity>;
 }
 
 export default LectureRepository;

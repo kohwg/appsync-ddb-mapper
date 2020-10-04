@@ -1,8 +1,9 @@
-import Lecture from '../domain/entity/Lecture';
-import LectureCurriculum from '../domain/entity/LectureCurriculum';
-import SearchEngine from '../domain/SearchEngine';
+import Lecture from "../domain/entity/Lecture";
+import LectureCurriculum from "../domain/entity/LectureCurriculum";
+import LectureEntity from "../domain/entity/LectureEntity";
+import LectureRepository from "../domain/LectureRepository";
 
-class SearchMockEngine implements SearchEngine {
+class LectureMockRepository implements LectureRepository {
 
     getAllLecture(): Array<Lecture> {
         let lectureList: Array<Lecture> = [
@@ -32,81 +33,22 @@ class SearchMockEngine implements SearchEngine {
         return lectureList;
     }
 
-    searchKeyword(keyword: string, startCtn:number, perPage:number): Array<Lecture> {
-
-        let lectureList:Array<Lecture> = this.getAllLecture();
-
-        let returnList:Array<Lecture>;
-
-        if( keyword === null ){
-            returnList = lectureList;
-        }else{
-
-            returnList = new Array<Lecture>();
-            lectureList.forEach((lecture, idx) => {
-                if(lecture.lectureNm.indexOf(keyword) > -1){
-                    returnList.push(lecture)
-                }
-            });
-        }
-
-        if(returnList != null && returnList.length > 0 && startCtn != null && perPage != null){
-            return this.paging(returnList, startCtn, perPage);
-        }else{
-            return returnList;
-        }
-
+    saveLecture(lecture: LectureEntity): Promise<LectureEntity> {
+        //TODO Implementation
+        throw new Error("Method not implemented.");
     }
 
-
-    keywordSearchByLectureCenterNm(keyword: string, startCtn: number, perPage: number): Array<Lecture> {
-
+    getLectureDetailByLectureId(lectureId: string): Promise<LectureEntity> {
+        //TODO Implementation
+        throw new Error("Method not implemented.");
+    }    
+    /*
+    getLectureDetailByLectureId(lectureId: string): Lecture {
         let lectureList: Array<Lecture> = this.getAllLecture();
-        let returnList: Array<Lecture>;
-
-        if (keyword === null) {
-            returnList = lectureList;
-        } else {
-            returnList = new Array<Lecture>();
-            lectureList.forEach((lecture, idx) => {
-                if (lecture.lectureCenterNm.indexOf(keyword) > -1) {
-                    returnList.push(lecture)
-                }
-            });
-        }
-
-        if (returnList != null && returnList.length > 0 && startCtn != null && perPage != null) {
-            return this.paging(returnList, startCtn, perPage);
-        } else {
-            return returnList;
-        }
-
+        let resultLecture: Lecture[] = lectureList?.filter(lecture => lecture.lectureId === lectureId);
+        return resultLecture[0];
     }
-
-    keywordSearchByLectureCurriculum(keyword: string): Array<Lecture> {
-
-        let lectureList: Array<Lecture> = this.getAllLecture();
-        let returnList: Array<Lecture>;
-
-        if (keyword === null) {
-            returnList = lectureList;
-        } else {
-            returnList = new Array<Lecture>();
-            lectureList.forEach((lecture, idx) => {
-                //일단은 커리큘럼 array를 json으로 바꿔서 문자열 있는지 여부로 검색...
-                if (JSON.stringify(lecture.lectureCurriculum).indexOf(keyword) > -1) {
-                    returnList.push(lecture)
-                }
-            });
-        }
-        return returnList;
-
-    }
-
-    //페이징..
-    paging(lectureList: Array<Lecture>, startCtn: number, perPage: number): Array<Lecture> {
-        return lectureList.slice((startCtn - 1) * perPage, (startCtn * perPage < lectureList.length ? startCtn * perPage : lectureList.length));
-    }
+    */
 }
 
-export default SearchMockEngine;
+export default LectureMockRepository;

@@ -1,4 +1,4 @@
-import LectureEntity from "../domain/LectureEntity";
+import LectureEntity from "../domain/entity/LectureEntity";
 import LectureRepository from "../domain/LectureRepository";
 import * as AWS from 'aws-sdk';
 import { DataMapper, QueryOptions } from '@aws/dynamodb-data-mapper';
@@ -22,17 +22,17 @@ class LectureDDBRepository implements LectureRepository {
     constructor() {
     }
 
-    public async save(lecture: LectureEntity) {
+    // 신규클래스 생성시 클래스 정보를 DDB에 저장 
+    public async saveLecture(lecture: LectureEntity) {
         console.log("### save : ", lecture);
         return await this.mapper.put(lecture);
     }
 
-    public async get(partitionkey: string, sortkey: string) { // primary key
+    public async getLectureDetailByLectureId(partitionkey: string) { // primary key
 
         const toGet = Object.assign(new LectureEntity,
             {
-                partitionkey: partitionkey,
-                sortkey: sortkey
+                partitionkey: partitionkey
             });
         return await this.mapper.get(toGet);
     }

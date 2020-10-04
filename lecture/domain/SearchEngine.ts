@@ -1,4 +1,4 @@
-import Lecture from '../domain/Lecture';
+import Lecture from './entity/Lecture';
 
 interface SearchEngine {
     searchKeyword(keyword: string, startCtn:number, perPage:number): Array<Lecture>;
