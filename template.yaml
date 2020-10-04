@@ -36,12 +36,12 @@ Resources:
       ApiId: !GetAtt LectureGraphQLApi.ApiId
       Definition: >
         input InputLecture {
-          partitionkey: String
+          partitionkey: String!
           sortkey: String
           attribute1: String
           attribute2: String
           lectureId: String
-          lectureNm: String
+          lectureNm: String!
           lectureStatusCd: String
           lectureStatusNm: String
           lectureLargeCtgCd: String
@@ -57,22 +57,27 @@ Resources:
           lectureCenterNm: String
           lectureBfSalePrice: String
           lectureAfSalePrice: String
-          lectureCtn: Number
-          lectureCurriculum: Array<any>
-          lectureOriginYn: boolean
+          lectureCtn: Int
+          lectureCurriculum: [lectureCurriculum]
+          lectureOriginYn: Boolean
           cartYn: String
           lectureImage: String
           tutorId: String
           
         }
 
+        type lectureCurriculum {
+          title: String
+          content: String
+        }
+
         type Lecture {
-          partitionkey: String
+          partitionkey: String!
           sortkey: String
           attribute1: String
           attribute2: String
-          lectureId: String
-          lectureNm: String
+          lectureId: String!
+          lectureNm: String!
           lectureStatusCd: String
           lectureStatusNm: String
           lectureLargeCtgCd: String
@@ -88,9 +93,9 @@ Resources:
           lectureCenterNm: String
           lectureBfSalePrice: String
           lectureAfSalePrice: String
-          lectureCtn: Number
-          lectureCurriculum: Array<any>
-          lectureOriginYn: boolean
+          lectureCtn: Int
+          lectureCurriculum: [lectureCurriculum]
+          lectureOriginYn: Boolean
           cartYn: String
           lectureImage: String
           tutorId: String
