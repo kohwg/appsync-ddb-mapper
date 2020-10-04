@@ -40,6 +40,9 @@ Resources:
           sortkey: String
           attribute1: String
           attribute2: String
+          lectureId: String
+          lectureNm: String
+          lectureStatusCd: String
         }
 
         type Lecture {
@@ -47,6 +50,9 @@ Resources:
           sortkey: String
           attribute1: String
           attribute2: String
+          lectureId: String
+          lectureNm: String
+          lectureStatusCd: String
         }
 
         schema {
