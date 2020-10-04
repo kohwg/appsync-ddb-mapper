@@ -58,7 +58,7 @@ Resources:
           lectureBfSalePrice: String
           lectureAfSalePrice: String
           lectureCtn: Number
-          lectureCurriculum: Array<LectureCurriculum>
+          lectureCurriculum: Array<any>
           lectureOriginYn: boolean
           cartYn: String
           lectureImage: String
