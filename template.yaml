@@ -43,12 +43,6 @@ Resources:
           lectureId: String!
           lectureNm: String!
           lectureStatusCd: String
-          lectureCurriculum: [LectureCurriculum]
-        }
-
-        type LectureCurriculum {
-          title: String
-          content: String
         }
 
         type Lecture {
@@ -59,7 +53,6 @@ Resources:
           lectureId: String!
           lectureNm: String!
           lectureStatusCd: String
-          lectureCurriculum: [LectureCurriculum]
         }
 
         schema {
