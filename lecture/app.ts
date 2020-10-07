@@ -43,28 +43,16 @@ exports.lambdaHandler = async (event, context) => {
     console.info('received:', event);
     console.info('context:', context);
 
-    if (event.httpMethod === 'POST' && event.path === '/lectures') {
-        response = lectureController.keywordSearch(event);
-    } else if (event.httpMethod === 'GET' && event.path === '/lectures') {
-        response = lectureController.keywordSearch(event);
-    } else if (event.httpMethod === 'GET' && event.path === '/lectureCenterNm') {
-        response = lectureController.keywordSearchByLectureCenterNm(event);
-    } else if (event.httpMethod === 'GET' && event.path === '/lectureCurriculum') {
-        response = lectureController.keywordSearchByLectureCurriculum(event);
-    } else if (event.httpMethod === 'GET' && event.path === '/detailLecture') {
-        let lectureId: string = JSON.parse(JSON.stringify(event.queryStringParameters)).lectureId;
-        response = lectureController.getLectureDetailByLectureId(lectureId);
-    } else if (event.httpMethod === 'GET' && event.path === '/review') {
-        let lectureId: string = JSON.parse(JSON.stringify(event.queryStringParameters)).lectureId;
-        response = lectureController.getReviewByLectureId(lectureId);
-    } else if(event.httpMethod === 'GET' && event.path === '/tutorsReview') {
-        let tutorId: string = JSON.parse(JSON.stringify(event.queryStringParameters)).tutorId;
-        response = lectureController.getReviewByTutorId(tutorId);
-    } else if (event.info?.fieldName == 'createLecture') {
+
+    // template.yaml에서 정의한 graphql Query/Mutation명이 event.info.fieldName값으로 자동으로 생성되기 때문에, 
+    // 이값을 통해 Appsync --> appsync 요청을 포워딩
+    if (event.info?.fieldName == 'createLecture') {
         let result = await lectureController.createLecture(event);
         response = result.data;
-    }
-    else {
+    } else if (event.info?.fieldName == 'getLectureByLectureId') {
+        let result = await lectureController.getLectureByLectureId(event);
+        response = result.data;
+    } else {
         console.log("does not exist the mapping fieldName");
         response = 'does not exist the mapping fieldName';
     }

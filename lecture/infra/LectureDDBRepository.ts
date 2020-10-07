@@ -28,11 +28,13 @@ class LectureDDBRepository implements LectureRepository {
         return await this.mapper.put(lecture);
     }
 
-    public async getLectureDetailByLectureId(partitionkey: string) { // primary key
+    // Lecture ID에 mapping되는 클래스 정보를 반환 
+    public async getLectureByLectureId(lectureId: string, sortkey: string) { // primary key
 
         const toGet = Object.assign(new LectureEntity,
             {
-                partitionkey: partitionkey
+                lectureId: lectureId,
+                sortkey: sortkey
             });
         return await this.mapper.get(toGet);
     }
@@ -44,11 +46,11 @@ class LectureDDBRepository implements LectureRepository {
      * @param partitionkey 
      * @param sortkey 
      */
-    public async query(partitionkey: string, sortkey: string) {
+    public async query(lectureId: string, sortkey: string) {
         const iterator = this.mapper.query(
             LectureEntity,
             {   // key condition - (partitionkey, range key you can use expression ( beginwith, between.. and so on))
-                partitionkey: partitionkey,
+                lectureId: lectureId,
                 sortkey: beginsWith(sortkey)
             }
         );
