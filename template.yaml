@@ -27,7 +27,7 @@ Resources:
   LectureGraphQLApi:
     Type: 'AWS::AppSync::GraphQLApi'
     Properties:
-      Name: !Sub "Emart-CultureClub-Lecture-${Stage}"
+      Name: !Sub "CultureClub-Lecture-Test-${Stage}"
       AuthenticationType: "AWS_IAM"
 
   LectureGraphQLSchema:
@@ -36,22 +36,19 @@ Resources:
       ApiId: !GetAtt LectureGraphQLApi.ApiId
       Definition: >
         input InputLecture {
-          partitionkey: String!
-          sortkey: String!
+          sortkey: String
           attribute1: String
           attribute2: String
-          lectureId: String!
-          lectureNm: String!
+          lectureNm: String
           lectureStatusCd: String
         }
 
         type Lecture {
-          partitionkey: String!
-          sortkey: String!
+          lectureId: String!
+          sortkey: String
           attribute1: String
           attribute2: String
-          lectureId: String!
-          lectureNm: String!
+          lectureNm: String
           lectureStatusCd: String
         }
 
@@ -65,8 +62,7 @@ Resources:
         }
 
         type Query {
-          getLectureById(lectureId: String): Lecture
-          getLecturesByKeyword(keyword: String): [Lecture]
+          getLectureByLectureId(lectureId: String!, sortkey: String!): Lecture
         }
 
 
@@ -76,6 +72,14 @@ Resources:
       ApiId: !GetAtt LectureGraphQLApi.ApiId
       TypeName: 'Mutation'
       FieldName: 'createLecture'
+      DataSourceName: !GetAtt LectureFunctionDatasource.Name
+      
+  getLectureByLectureIdResolver:
+    Type: AWS::AppSync::Resolver
+    Properties:
+      ApiId: !GetAtt LectureGraphQLApi.ApiId
+      TypeName: 'Query'
+      FieldName: 'getLectureByLectureId'
       DataSourceName: !GetAtt LectureFunctionDatasource.Name
 
   LectureFunctionDatasource:
@@ -136,42 +140,7 @@ Resources:
             Path: /lectures
             Method: get
             RestApiId: !Ref LectureApi
-        SearchKeywordPost:
-          Type: Api 
-          Properties:
-            Path: /lectures
-            Method: post
-            RestApiId: !Ref LectureApi
-        SearchKeywordCenterNm:
-          Type: Api 
-          Properties:
-            Path: /lectureCenterNm
-            Method: get
-            RestApiId: !Ref LectureApi
-        SearchKeywordCurriculum:
-          Type: Api 
-          Properties:
-            Path: /lectureCurriculum
-            Method: get
-            RestApiId: !Ref LectureApi
-        SearchDetailByLectureId:
-          Type: Api
-          Properties:
-            Path: /detailLecture
-            Method: get
-            RestApiId: !Ref LectureApi
-        SearchReviewByLectureId:
-          Type: Api
-          Properties:
-            Path: /review
-            Method: get
-            RestApiId: !Ref LectureApi
-        SearchReviewByTutorId:
-          Type: Api
-          Properties:
-            Path: /tutorsReview
-            Method: get
-            RestApiId: !Ref LectureApi
+         
 
       MemorySize: 128
       Timeout: 100
@@ -179,21 +148,21 @@ Resources:
       
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref LectureTable
+            TableName: !Ref LectureDDBTestTable
       Environment:
         Variables:
-          SAMPLE_TABLE: !Ref LectureTable
+          SAMPLE_TABLE: !Ref LectureDDBTestTable
           SECRET_ARN: !Ref MasterSecretArn
           SECRET_MASTER: !Ref MasterSecretsManagerKey
           STAGE: !Ref Stage
 
   # Dynamodb
-  LectureTable:
+  LectureDDBTestTable:
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
         -
-          AttributeName: "partitionkey"
+          AttributeName: "lectureId"
           AttributeType: "S"
         -
           AttributeName: "sortkey"
@@ -207,7 +176,7 @@ Resources:
           
       KeySchema:
         -
-          AttributeName: "partitionkey"
+          AttributeName: "lectureId"
           KeyType: "HASH"
         -
           AttributeName: "sortkey"
@@ -238,18 +207,6 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
-  WriteCapacityScalableTarget:
-    Type: AWS::ApplicationAutoScaling::ScalableTarget
-    Properties:
-      MaxCapacity: 15
-      MinCapacity: 5
-      ResourceId: !Join
-        - /
-        - - table
-          - !Ref LectureTable
-      RoleARN: !GetAtt ScalingRole.Arn
-      ScalableDimension: dynamodb:table:WriteCapacityUnits
-      ServiceNamespace: dynamodb
   ScalingRole:
     Type: AWS::IAM::Role
     Properties:
@@ -281,18 +238,6 @@ Resources:
                   - "cloudwatch:SetAlarmState"
                   - "cloudwatch:DeleteAlarms"
                 Resource: "*"
-  WriteScalingPolicy:
-    Type: AWS::ApplicationAutoScaling::ScalingPolicy
-    Properties:
-      PolicyName: WriteAutoScalingPolicy
-      PolicyType: TargetTrackingScaling
-      ScalingTargetId: !Ref WriteCapacityScalableTarget
-      TargetTrackingScalingPolicyConfiguration:
-        TargetValue: 50.0
-        ScaleInCooldown: 60
-        ScaleOutCooldown: 60
-        PredefinedMetricSpecification:
-          PredefinedMetricType: DynamoDBWriteCapacityUtilization
 
 Outputs:
   APIEndpoint:
